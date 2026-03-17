@@ -33,6 +33,10 @@ start()
   // disable paging for now.
   w_satp(0);
 
+  // allow S-mode to access all physical memory via PMP (compat with some QEMU builds)
+  w_pmpaddr0(~0ULL);
+  w_pmpcfg0(0x1F); // R|W|X + NAPOT
+
   // delegate all interrupts and exceptions to supervisor mode.
   w_medeleg(0xffff);
   w_mideleg(0xffff);
@@ -44,6 +48,7 @@ start()
   // keep each CPU's hartid in its tp register, for cpuid().
   int id = r_mhartid();
   w_tp(id);
+  // ready to switch to S mode and run main()
 
   // switch to supervisor mode and jump to main().
   asm volatile("mret");

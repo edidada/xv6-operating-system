@@ -5,7 +5,7 @@
  * Run as a prime-number processor
  * the listenfd is from your left neighbor
  */
-void runprocess(int listenfd) {
+__attribute__((noreturn)) void runprocess(int listenfd) {
   int my_num = 0;
   int forked = 0;
   int passed_num = 0;
